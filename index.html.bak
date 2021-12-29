@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Titre</title>
+        <script>
+          function downloadData(contentType,data,filename){
+
+             var link=document.createElement("A");
+             link.setAttribute("href",encodeURI("data:"+contentType+","+data));
+             link.setAttribute("style","display:none");
+             link.setAttribute("download",filename);
+             document.body.appendChild(link);                                                        //needed for firefox
+             console.log(link.outerHTML);
+             link.click();
+             setTimeout(function(){
+              document.body.removeChild(link);
+             },1000);
+          }
+
+          function fromToXml(form){
+              var xmldata=['<?xml version="1.0"?>'];
+              xmldata.push("<form>");
+              var inputs=form.elements;
+              for(var i=0;i<inputs.length;i++){
+                var el=document.createElement("ELEMENT");
+                if (inputs[i].name){
+                  el.setAttribute("name",inputs[i].name);
+                  el.setAttribute("value",inputs[i].value);
+                  xmldata.push(el.outerHTML);
+                }
+
+              }
+              xmldata.push("</form>");
+              return xmldata.join("\n");
+          }
+
+
+          function download(frm){
+
+            var data=fromToXml(frm);
+            console.log(data);
+
+            downloadData("text/xml",data,"export.xml");
+          }
+        </script>
+    </head>
+
+    <body background="C:\Users\Mandaniaina\Desktop\t.jpg">
+	 <center>
+        <form action="" method="post">
+			<fieldset>
+			<center><legend><font size="50" color="Grey"><I><B>FORMULAIRE D'INSCRIPTION</B></I></font></legend></center
+			<!-- La balise Table pour formater l'affichage du formulaire -->
+			<table>
+			  <tr>
+                 <td><label for="firstname"><font size="3" color="#OOOOOO">FIRST NAME&nbsp:&nbsp</label></td>
+                 <td><input type="text" name="FIRST NAME" id="firstname" placeholder="Your Firstname"></td>
+			  </tr>		
+					<br>
+					<br>
+			  <tr>		
+                 <td><label for="lastName"><font size="3" color="#OOOOOO">LAST NAME&nbsp;&nbsp:&nbsp</label></td>
+                 <td><input type="text" name="LAST NAME" id="lastname" placeholder="Your Lastname"></td>
+              </tr> 				
+				<br>
+				<br>
+			  <tr>
+                 <td><label for="phone"><font size="3" color="#OOOOOO">PHONE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp:</label></td>
+                 <td><input type="text" name="PHONE NUMBER" id="phone" placeholder="Your PhoneNumber"></td>
+			  </tr>
+			  </table>
+		      	<br>
+				<br>
+				<button type="button" onclick="download(this.form)" id="submitButton"><B><font color="Grey">Download</font></B></button>
+				</fieldset>
+			</form>
+	  </center>	
+    
+    </body>
+</html>
